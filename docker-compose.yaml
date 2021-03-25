@@ -1,0 +1,35 @@
+version: "3.4"
+services:
+  picpayapi:
+    image: picpayapi
+    container_name: picpayapi
+    environment:
+      - SPRING_DATA_MONGODB_.HOST=mongodb
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongoseed
+    build: .
+
+  mongodb:
+    image : mongo:3.4
+    container_name: mongodb
+    environment:
+      - MONGO_INITDB_DATABASE=picpay
+    volumes:
+      - ./mongodb/database:/data/db
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
+
+  mongoseed:
+    container_name: mongoseed
+    image: mongo:3.4
+    depends_on:
+      - mongodb
+    volumes:
+      - ./mongoseed/users.csv:/users.csv
+      - ./mongoseed/import.sh:/import.sh
+      - ./mongoseed/updateUserRelevanceLevel1.js:/updateUserRelevanceLevel1.js
+      - ./mongoseed/updateUserRelevanceLevel2.js:/updateUserRelevanceLevel2.js
+    command: bash -c "chmod +x import.sh && ./import.sh"
