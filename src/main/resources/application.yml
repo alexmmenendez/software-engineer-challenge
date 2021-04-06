@@ -1,0 +1,17 @@
+server.port: 8080
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: picpay
+  redis:
+    port: 6379
+    host: localhost
+    password: VOHi+1tt6+OcsmFPyep+mBs30cV78OGjkkfLIcfsFgM=
+
+cacheManager:
+    strategy: redis
+    user.expirationTime: 86400 #24 hours
+jwt.secret: usersecret
