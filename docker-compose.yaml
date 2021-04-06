@@ -11,25 +11,32 @@ services:
       - mongoseed
     build: .
 
+  redis:
+    container_name: redisdb
+    image: redis
+    command: redis-server --requirepass VOHi+1tt6+OcsmFPyep+mBs30cV78OGjkkfLIcfsFgM=
+    ports:
+      - "6379:6379"
+
   mongodb:
     image : mongo:3.4
     container_name: mongodb
     environment:
-      - MONGO_INITDB_DATABASE=picpay
+        - MONGO_INITDB_DATABASE=picpay
     volumes:
-      - ./mongodb/database:/data/db
+        - ./mongodb/database:/data/db
     ports:
-      - "27017:27017"
+        - "27017:27017"
     restart: unless-stopped
 
   mongoseed:
     container_name: mongoseed
     image: mongo:3.4
     depends_on:
-      - mongodb
+        - mongodb
     volumes:
-      - ./mongoseed/users.csv:/users.csv
-      - ./mongoseed/import.sh:/import.sh
-      - ./mongoseed/updateUserRelevanceLevel1.js:/updateUserRelevanceLevel1.js
-      - ./mongoseed/updateUserRelevanceLevel2.js:/updateUserRelevanceLevel2.js
+        - ./mongoseed/users.csv:/users.csv
+        - ./mongoseed/import.sh:/import.sh
+        - ./mongoseed/updateUserRelevanceLevel1.js:/updateUserRelevanceLevel1.js
+        - ./mongoseed/updateUserRelevanceLevel2.js:/updateUserRelevanceLevel2.js
     command: bash -c "chmod +x import.sh && ./import.sh"
