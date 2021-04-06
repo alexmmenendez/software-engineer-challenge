@@ -1,6 +1,7 @@
 package com.picpay.softwareengineerchallenge.services;
 
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
+import com.picpay.softwareengineerchallenge.configs.CollectionIndexConfig;
 import com.picpay.softwareengineerchallenge.controller.response.UserResponse;
 import com.picpay.softwareengineerchallenge.domain.User;
 import com.picpay.softwareengineerchallenge.repositories.UserMongoTemplate;
@@ -10,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -24,7 +25,6 @@ import static com.picpay.softwareengineerchallenge.templates.UserTemplates.*;
 import static com.picpay.softwareengineerchallenge.templates.Templates.BASE_PACKAGE;
 
 @SpringBootTest
-@ActiveProfiles("test")
 public class UserServiceTest {
     @InjectMocks
     private UserService userService;
@@ -32,6 +32,8 @@ public class UserServiceTest {
     private UserMongoTemplate userMongoTemplate;
     @Mock
     private UserMongoRepository userMongoRepository;
+    @MockBean
+    private CollectionIndexConfig collectionIndexConfig;
 
     @BeforeAll
     public static void beforeAll() {

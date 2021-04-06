@@ -1,10 +1,12 @@
 package com.picpay.softwareengineerchallenge.services.auth;
 
+import com.picpay.softwareengineerchallenge.configs.CollectionIndexConfig;
 import com.picpay.softwareengineerchallenge.utils.JwtTokenUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +24,8 @@ public class JwtAuthenticationServiceTest {
     private AuthenticationManager authenticationManager;
     @Mock
     private JwtTokenUtils jwtTokenUtils;
+    @MockBean
+    private CollectionIndexConfig collectionIndexConfig;
 
     private static final String accessToken = "accessToken";
     private static final String password = "diether.bein";
