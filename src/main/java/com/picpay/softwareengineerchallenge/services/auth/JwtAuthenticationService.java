@@ -15,15 +15,17 @@ import org.springframework.stereotype.Service;
 public class JwtAuthenticationService {
 
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenUtils jwtTokenUtil;
+    private final JwtTokenUtils jwtTokenUtils;
 
-    public JwtResponse authenticateUser(final String username, final String password) throws Exception {
+    public JwtResponse authenticateUser(final String username, final String password) throws BadCredentialsException {
         try {
+            log.info("Authenticating user by username: {}", username);
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (final BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS");
+            log.info("Unauthorized access to username: {}", username);
+            throw new BadCredentialsException("Invalid username or password");
         }
 
-        return JwtResponse.builder().accessToken(jwtTokenUtil.generateToken(username)).build();
+        return JwtResponse.builder().accessToken(jwtTokenUtils.generateToken(username)).build();
     }
 }

@@ -1,6 +1,8 @@
 package com.picpay.softwareengineerchallenge.filter;
 
-import com.picpay.softwareengineerchallenge.services.auth.JwtUserDetailsService;
+import com.picpay.softwareengineerchallenge.exceptions.BadRequestException;
+import com.picpay.softwareengineerchallenge.exceptions.UnauthorizedException;
+import com.picpay.softwareengineerchallenge.services.auth.UserDetailsServiceImpl;
 import com.picpay.softwareengineerchallenge.utils.JwtTokenUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
@@ -23,40 +25,36 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    JwtUserDetailsService jwtUserDetailsService;
+    UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
     JwtTokenUtils jwtTokenUtils;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
+            throws ServletException, IOException, UnauthorizedException {
         final String requestTokenHeader = request.getHeader("Authorization");
 
         String username = null;
-        String jwtToken = null;
+        String accesToken = null;
 
-        // JWT Token está no form "Bearer token". Remova a palavra Bearer e pegue somente o Token
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-            jwtToken = requestTokenHeader.substring(7);
+            accesToken = requestTokenHeader.substring(7);
             try {
-                username = jwtTokenUtils.getUsernameFromToken(jwtToken);
+                username = jwtTokenUtils.getUsernameFromToken(accesToken);
             } catch (final IllegalArgumentException e) {
-                //TODO throw bad request
-                System.out.println("Unable to get JWT Token");
+                log.error("Unable to get Access Token: {}", accesToken);
+                throw new BadRequestException("Unable to get Access Token", e);
             } catch (final ExpiredJwtException e) {
-                //TODO throw unauthorized
-                System.out.println("JWT Token has expired");
+                log.error("Access Token has expired: {}", accesToken);
+                throw new UnauthorizedException("Access Token has expired", e);
             }
-        } else {
-            logger.warn("JWT Token does not begin with Bearer String");
         }
 
-        // Tendo o token, valide o.
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
+            UserDetails userDetails = this.userDetailsServiceImpl.loadUserByUsername(username);
 
-            if (jwtTokenUtils.validateToken(jwtToken, userDetails)) {
+            if (jwtTokenUtils.validateToken(accesToken, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -66,5 +64,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
         chain.doFilter(request, response);
     }
-
 }
