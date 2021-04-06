@@ -8,8 +8,7 @@ spring:
       database: picpay
   redis:
     port: 6379
-    host: localhost
-    password: VOHi+1tt6+OcsmFPyep+mBs30cV78OGjkkfLIcfsFgM=
+    host: redisdb
 
 cacheManager:
     strategy: redis

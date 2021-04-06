@@ -14,7 +14,7 @@ services:
   redis:
     container_name: redisdb
     image: redis
-    command: redis-server --requirepass VOHi+1tt6+OcsmFPyep+mBs30cV78OGjkkfLIcfsFgM=
+    command: [ "redis-server", "--protected-mode", "no" ]
     ports:
       - "6379:6379"
 
