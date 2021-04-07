@@ -1,6 +1,5 @@
 package com.picpay.softwareengineerchallenge.filter;
 
-import com.picpay.softwareengineerchallenge.configs.CollectionIndexConfig;
 import com.picpay.softwareengineerchallenge.exceptions.BadRequestException;
 import com.picpay.softwareengineerchallenge.exceptions.UnauthorizedException;
 import com.picpay.softwareengineerchallenge.services.auth.UserDetailsServiceImpl;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.FilterChain;
@@ -39,8 +37,6 @@ public class JwtRequestFilterTest {
     private HttpServletRequest httpServletRequest;
     @Mock
     private HttpServletResponse httpServletResponse;
-    @MockBean
-    private CollectionIndexConfig collectionIndexConfig;
 
     private static final String USERNAME = "diether.bein";
     private static final String ACCESS_TOKEN = "Bearer eyJhbGciOiJIUzUxMiJ9" +

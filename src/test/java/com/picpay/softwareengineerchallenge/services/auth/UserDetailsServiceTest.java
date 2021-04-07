@@ -2,7 +2,6 @@ package com.picpay.softwareengineerchallenge.services.auth;
 
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
-import com.picpay.softwareengineerchallenge.configs.CollectionIndexConfig;
 import com.picpay.softwareengineerchallenge.domain.User;
 import com.picpay.softwareengineerchallenge.services.UserService;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
@@ -28,8 +26,6 @@ public class UserDetailsServiceTest {
     private UserDetailsServiceImpl userDetailsService;
     @Mock
     private UserService userService;
-    @MockBean
-    private CollectionIndexConfig collectionIndexConfig;
 
     @BeforeAll
     public static void beforeAll() {

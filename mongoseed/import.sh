@@ -5,3 +5,4 @@ mongoimport --host mongodb --type csv -d picpay -c user --headerline --drop user
 
 mongo --host mongodb < updateUserRelevanceLevel1.js
 mongo --host mongodb < updateUserRelevanceLevel2.js
+mongo --host mongodb < createIndex.js
