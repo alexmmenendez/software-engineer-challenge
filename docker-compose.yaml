@@ -39,4 +39,5 @@ services:
         - ./mongoseed/import.sh:/import.sh
         - ./mongoseed/updateUserRelevanceLevel1.js:/updateUserRelevanceLevel1.js
         - ./mongoseed/updateUserRelevanceLevel2.js:/updateUserRelevanceLevel2.js
+        - ./mongoseed/createIndex.js:/createIndex.js
     command: bash -c "chmod +x import.sh && ./import.sh"
